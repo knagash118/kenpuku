@@ -6,46 +6,124 @@
     <title>ドリンク・スロット</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+/*
+サイバー風
         body { margin: 0; min-height: 100vh; font-family: sans-serif; background: #2f3542; display: flex; align-items: center; justify-content: center; color: white; padding: 10px; box-sizing: border-box; }
         .container { background: #57606f; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 100%; max-width: 500px; }
-        #slot-display { background: #2f3542; color: #ffa502; font-size: 32px; font-weight: bold; height: 200px; display: flex; align-items: center; justify-content: center; border: 5px solid #ffa502; border-radius: 10px; margin: 20px 0; overflow: hidden; text-shadow: 0 0 10px #ffa502; }
-        .btn { cursor: pointer; border: none; font-weight: bold; border-radius: 10px; transition: transform 0.1s; padding: 10px; margin: 5px; }
-        .btn:active { transform: scale(0.95); }
-        #main-btn { width: 100%; font-size: 24px; padding: 25px; margin-bottom: 15px; background-color: #2ed573; color: white; }
+        
+        #slot-display { background: #2f3542; color: #ffa502; font-size: 30px; font-weight: bold; height: 100px; display: flex; align-items: center; justify-content: center; border: 5px solid #ffa502; border-radius: 10px; margin: 20px 0; }
+
+        .btn { cursor: pointer; border: none; font-weight: bold; border-radius: 10px; padding: 20px; width: 100%; font-size: 20px; }
+        #main-btn { background-color: #2ed573; color: white; }
         .stop-style { background-color: #ffa502 !important; }
-        .control-btn { width: 30%; font-size: 12px; }
-        textarea { width: 100%; height: 200px; font-size: 16px; margin-top: 10px; border-radius: 5px; padding: 10px; box-sizing: border-box; }
+
+        //チェックボックスのリスト設定
+        #checkbox-list { text-align: left; margin-top: 20px; max-height: 300px; overflow-y: auto; background: #2f3542; padding: 10px; border-radius: 10px; }
+        .item-label { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #57606f; cursor: pointer; font-size: 18px; }
+        .item-label input { transform: scale(1.5); margin-right: 15px; }
+*/
+
+
+/* 全体の背景：空のような明るい水色から薄い黄色へのグラデーション */
+        body { 
+            margin: 0; min-height: 100vh; font-family: 'Arial Black', sans-serif; 
+            background: linear-gradient(135deg, #fff9c4, #b3e5fc); 
+            display: flex; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; 
+        }
+        
+        /* コンテナ：角丸で、おもちゃ箱のような温かい雰囲気 */
+        .container { 
+            background: #ffffff; padding: 25px; border-radius: 35px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center; width: 100%; max-width: 500px; 
+            border: 6px solid #ffeb3b; /* 明るい黄色の縁取り */
+        }
+        
+        h1 { color: #f57c00; font-size: 26px; margin: 5px 0; text-shadow: 1px 1px #fff; }
+
+        /* スロット窓：ワクワクするオレンジベース */
+        #slot-display { 
+            background: #fff3e0; color: #e65100; font-size: 30px; font-weight: bold; 
+            height: 120px; display: flex; align-items: center; justify-content: center; 
+            border: 6px solid #ffb74d; border-radius: 25px; margin: 20px 0;
+            box-shadow: inset 0 4px 0 rgba(255,255,255,0.5);
+        }
+
+        /* 楽しいボタン：クリックしたくなる立体感 */
+        .btn { 
+            cursor: pointer; border: none; font-weight: bold; border-radius: 50px; 
+            padding: 20px; width: 100%; font-size: 24px; color: white;
+            box-shadow: 0 8px #d84315; transition: transform 0.1s;
+        }
+        #main-btn { background-color: #ff9800; }
+        #main-btn:active { transform: translateY(4px); box-shadow: 0 4px #d84315; }
+        .stop-style { background-color: #f44336 !important; box-shadow: 0 8px #b71c1c !important; }
+
+        /* チェックリスト：水色ベースで整理されたデザイン */
+        #checkbox-list { 
+            text-align: left; margin-top: 20px; max-height: 300px; overflow-y: auto; 
+            background: #e1f5fe; padding: 15px; border-radius: 25px; border: 3px solid #b3e5fc;
+        }
+        .item-label { 
+            display: flex; align-items: center; padding: 12px; margin-bottom: 8px;
+            background: #ffffff; border-radius: 15px; cursor: pointer; 
+            font-size: 18px; color: #0277bd; font-weight: bold;
+        }
+        .item-label input { accent-color: #03a9f4; transform: scale(1.6); margin-right: 15px; }
+
+
+
+
+
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+.shake { animation: 
+
+
+shake 0.5s; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <h1>迷ったときは</h1>
     <h1>ドリンク・スロット</h1>
-    <div id="slot-display">READY</div>
+
+　
+
+    <div id="slot-display">READY?</div>
     <button id="main-btn" class="btn" onclick="toggleSlot()">スタート！</button>
 
-    <div style="text-align: left; margin-top: 20px;">
-        <label>商品リスト（編集可能）：</label>
-        <textarea id="item-input">
-コカ・コーラ
-キリンレモン
-カルピスウォーター
-ミニッツメイドQoo りんご
-ファンタ グレープ
-ファンタ オレンジ
-バヤリース オレンジ
-メロンソーダ
-午後の紅茶 レモン
-午後の紅茶 ミルクティー
-午後の紅茶 ストレート
-伊藤園 健康ミネラルむぎ茶
-伊藤園 おーいお茶緑茶
-</textarea>
-        <div style="display: flex; justify-content: space-between;">
-            <button class="btn control-btn" onclick="location.reload();">リセット</button>
-            <button class="btn control-btn" style="background:#2ed573; color:white;" onclick="saveListToVariable();">保存</button>
-            <button class="btn control-btn" style="background:#ffa502; color:white;" onclick="loadListFromVariable();">読込</button>
-        </div>
+    <div id="checkbox-list">
+        <label class="item-label"><input type="checkbox" checked value="コカ・コーラ"> コカ・コーラ</label>
+        <label class="item-label"><input type="checkbox" checked value="キリンレモン"> キリンレモン</label>
+
+        <label class="item-label"><input type="checkbox" checked value="カルピスウォーター"> カルピスウォーター</label>
+
+        <label class="item-label"><input type="checkbox" checked value="ファンタ グレープ"> ファンタ グレープ</label>
+        <label class="item-label"><input type="checkbox" checked value="ファンタ オレンジ"> ファンタ オレンジ</label>
+
+        <label class="item-label"><input type="checkbox" checked value="午後の紅茶レモン"> 午後の紅茶 レモン</label>
+        <label class="item-label"><input type="checkbox" checked value="午後の紅茶ミルクティー"> 午後の紅茶ミルクティー</label>
+
+        <label class="item-label"><input type="checkbox" checked value="おーいお茶緑茶"> おーいお茶緑茶</label>
+        <label class="item-label"><input type="checkbox" checked value="ミネラルむぎ茶"> ミネラルむぎ茶</label>
+
+        <label class="item-label"><input type="checkbox" checked value="バヤリース オレンジ"> バヤリース オレンジ</label>
+        <label class="item-label"><input type="checkbox" checked value="Qoo りんご"> Qoo りんご</label>
+
+
     </div>
 </div>
 
@@ -53,48 +131,129 @@
     let isSpinning = false;
     let slotInterval;
 
-    // ページ読み込み時に自動で実行
-    window.onload = function() {
-        loadListFromCookie();
-    };
-
     function toggleSlot() {
+        const mainBtn = document.getElementById('main-btn');
+        const selectedItems = Array.from(document.querySelectorAll('input:checked')).map(i => i.value);
+
+        if (selectedItems.length === 0) {
+            alert("リストから少なくとも1つ選択してください！");
+            return;
+        }
+
         if (!isSpinning) {
             isSpinning = true;
-            document.getElementById('main-btn').textContent = "ストップ！";
-            document.getElementById('main-btn').classList.add("stop-style");
+            mainBtn.textContent = "ストップ！";
+
+//タップ音
+playSound('tick');
+
+            mainBtn.classList.add("stop-style");
             
-            const items = document.getElementById('item-input').value.split('\n').filter(i => i.trim() !== "");
+            //slotInterval = setInterval(() => {
+            //    const randomIndex = Math.floor(Math.random() * selectedItems.length);
+            //    // ここを textContent から innerHTML に変更しました
+            //    document.getElementById('slot-display').innerHTML = selectedItems[randomIndex];
+            //}, 80);
+
+
+
             slotInterval = setInterval(() => {
-                document.getElementById('slot-display').textContent = items[Math.floor(Math.random() * items.length)];
-            }, 80);
+                const randomIndex = Math.floor(Math.random() * selectedItems.length);
+                const item = selectedItems[randomIndex];
+                const display = document.getElementById('slot-display');
+                
+                // 表示内容を反映
+                display.innerHTML = item;
+
+                // 【ここを追加】文字数に応じてサイズを変更
+                if (item.length > 10) {
+                    display.style.fontSize = "20px"; // 長い場合
+                } else if (item.length > 6) {
+                    display.style.fontSize = "25px"; // 普通の場合
+                } else {
+                    display.style.fontSize = "35px"; // 短い場合
+                }
+
+
+
+//画面のシェイク（揺れ）
+//document.querySelector('.container').classList.add('shake');
+//setTimeout(() => {
+//    document.querySelector('.container').classList.remove('shake');
+//}, 500);
+
+
+//ルーレット音
+playSound('');
+
+         }, 80);//文字の変わるスピード
+
+
         } else {
             clearInterval(slotInterval);
             isSpinning = false;
-            document.getElementById('main-btn').textContent = "スタート！";
-            document.getElementById('main-btn').classList.remove("stop-style");
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            mainBtn.textContent = "スタート！";
+            mainBtn.classList.remove("stop-style");
+
+
+     //confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+
+
+
+
+    confetti({
+        particleCount: 200, // 粒子を増やす
+        spread: 100,        // 広がりを大きく
+        origin: { y: 0.6 }
+    });
+
+    // 2. 左右から別の紙吹雪を追加（これを入れると非常に豪華になります）
+    confetti({
+        particleCount: 50,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.6 } // 左下から
+    });
+    confetti({
+        particleCount: 50,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.6 } // 右下から
+    });
+
+
+confetti({
+    particleCount: 200,
+    shapes: ['square', 'circle', 'star', 'heart'], // これらをランダムに混ぜる
+    colors: ['#FFE400', '#FFBD00', '#E89400', '#FFCA6C', '#FDFFB8']
+});
+
+
+
+    }
+
+    }
+
+let audioCtx;
+        function playSound(type) {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            if(type === 'tick') {
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+            } else {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523, audioCtx.currentTime);
+//osc.frequency.setValueAtTime(400 + (Math.random() * 400), audioCtx.currentTime);//リズム変化
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+            }
         }
-    }
 
 
-    // 1. 変数に保存するための入れ物を作成
-    let savedListData = "";
-
-    // 2. 保存関数：テキストエリアの文字を変数にセット
-    function saveListToVariable() {
-        const text = document.getElementById("item-input").value;
-        savedListData = text; 
-    }
-
-    // 3. 読み込み関数：変数にセットした値をテキストエリアに反映
-    function loadListFromVariable() {
-        if (savedListData === "") {
-            alert('まだ何も保存されていません。');
-        } else {
-            document.getElementById("item-input").value = savedListData;
-        }
-    }
 
 </script>
 </body>
