@@ -106,6 +106,7 @@
         <label class="item-label"><input type="checkbox" checked value="バヤリース オレンジ"> バヤリース オレンジ</label>
         <label class="item-label"><input type="checkbox" checked value="Qoo りんご"> Qoo りんご</label>
     </div>
+<!--
     <div style="text-align: center; margin: 10px 0;">
         <label style="font-weight: bold; color: #555; cursor: pointer;">
             <input type="checkbox" id="sound-off-checkbox" checked> SOUND OFF
@@ -113,6 +114,16 @@
         <br/>
         <label style="font-weight: bold; color: #555; cursor: pointer;">
             <input type="checkbox" id="jackpot-checkbox" checked> 当選あり
+        </label>
+    </div>
+-->
+<!-- 修正後のチェックボックス配置部分 -->
+<div style="display: flex; flex-direction: column; align-items: flex-start; margin: 10px auto; width: fit-content;">
+        <label style="font-weight: bold; color: #555; cursor: pointer; display: flex; align-items: center; margin-bottom: 5px;">
+            <input type="checkbox" id="sound-off-checkbox" checked style="margin-right: 10px;"> SOUND OFF
+        </label>
+        <label style="font-weight: bold; color: #555; cursor: pointer; display: flex; align-items: center;">
+            <input type="checkbox" id="jackpot-checkbox" checked style="margin-right: 10px;"> 当選あり
         </label>
     </div>
 </div>
