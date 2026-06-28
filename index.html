@@ -6,23 +6,6 @@
     <title>ドリンク・スロット</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-/*
-サイバー風
-        body { margin: 0; min-height: 100vh; font-family: sans-serif; background: #2f3542; display: flex; align-items: center; justify-content: center; color: white; padding: 10px; box-sizing: border-box; }
-        .container { background: #57606f; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 100%; max-width: 500px; }
-        
-        #slot-display { background: #2f3542; color: #ffa502; font-size: 30px; font-weight: bold; height: 100px; display: flex; align-items: center; justify-content: center; border: 5px solid #ffa502; border-radius: 10px; margin: 20px 0; }
-
-        .btn { cursor: pointer; border: none; font-weight: bold; border-radius: 10px; padding: 20px; width: 100%; font-size: 20px; }
-        #main-btn { background-color: #2ed573; color: white; }
-        .stop-style { background-color: #ffa502 !important; }
-
-        //チェックボックスのリスト設定
-        #checkbox-list { text-align: left; margin-top: 20px; max-height: 300px; overflow-y: auto; background: #2f3542; padding: 10px; border-radius: 10px; }
-        .item-label { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #57606f; cursor: pointer; font-size: 18px; }
-        .item-label input { transform: scale(1.5); margin-right: 15px; }
-*/
-
 
 /* 全体の背景：空のような明るい水色から薄い黄色へのグラデーション */
         body { 
@@ -58,6 +41,9 @@
         #main-btn:active { transform: translateY(4px); box-shadow: 0 4px #d84315; }
         .stop-style { background-color: #f44336 !important; box-shadow: 0 8px #b71c1c !important; }
 
+        #hit-btn { background-color: #ff9800; }
+
+
         /* チェックリスト：水色ベースで整理されたデザイン */
         #checkbox-list { 
             text-align: left; margin-top: 20px; max-height: 300px; overflow-y: auto; 
@@ -71,36 +57,33 @@
         .item-label input { accent-color: #03a9f4; transform: scale(1.6); margin-right: 15px; }
 
 
+/* 大当たり用オーバーレイのスタイル */
+  #overlay {
+    display: none; /* 初期状態は非表示 */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.8); /* 半透明の黒 */
+    color: white;
+    font-size: 10vw; /* 画面幅に応じたサイズ */
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: pointer;
+  }
 
-
-
-
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-    20% { transform: translate(-3px, 0px) rotate(1deg); }
-    30% { transform: translate(3px, 2px) rotate(0deg); }
-    40% { transform: translate(1px, -1px) rotate(1deg); }
-    50% { transform: translate(-1px, 2px) rotate(-1deg); }
-    60% { transform: translate(-3px, 1px) rotate(0deg); }
-    70% { transform: translate(3px, 1px) rotate(-1deg); }
-    80% { transform: translate(-1px, -1px) rotate(1deg); }
-    90% { transform: translate(1px, 2px) rotate(0deg); }
-    100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
-.shake { animation: 
-
-
-shake 0.5s; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>迷ったときは</h1>
+    <label style="font-weight: bold; color: #555; cursor: pointer; font-size: 32px;">
+        横浜南陵高校<br/>健康福祉グループ
+    </label>
     <h1>ドリンク・スロット</h1>
 
-　
+　<div id="overlay"><button id="hit-btn" class="btn" onclick="closeButton()">大当たり！</button></div>
 
     <div id="slot-display">READY?</div>
     <button id="main-btn" class="btn" onclick="toggleSlot()">スタート！</button>
@@ -125,7 +108,11 @@ shake 0.5s; }
     </div>
     <div style="text-align: center; margin: 10px 0;">
         <label style="font-weight: bold; color: #555; cursor: pointer;">
-            <input type="checkbox" id="sound-off-checkbox"> SOUND OFF
+            <input type="checkbox" id="sound-off-checkbox" checked> SOUND OFF
+        </label>
+        <br/>
+        <label style="font-weight: bold; color: #555; cursor: pointer;">
+            <input type="checkbox" id="jackpot-checkbox" checked> 当選あり
         </label>
     </div>
 </div>
@@ -133,10 +120,15 @@ shake 0.5s; }
 <script>
     let isSpinning = false;
     let slotInterval;
+    const hitMath = 0.2;
+
+
 
     function toggleSlot() {
         const mainBtn = document.getElementById('main-btn');
-        const selectedItems = Array.from(document.querySelectorAll('input:checked')).map(i => i.value);
+//        const selectedItems = Array.from(document.querySelectorAll('input:checked')).map(i => i.value);
+          const selectedItems =  Array.from(document.querySelectorAll('#checkbox-list input:checked'))
+         .map(i => i.value);
 
         if (selectedItems.length === 0) {
             alert("リストから少なくとも1つ選択してください！");
@@ -198,10 +190,10 @@ playSound('');
             mainBtn.textContent = "スタート！";
             mainBtn.classList.remove("stop-style");
 
-
-     //confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-
-
+    if ((document.getElementById('jackpot-checkbox').checked && Math.random() < hitMath)) {
+      // 大当たりの場合、オーバーレイを表示
+      overlay.style.display = 'flex';
+    }
 
 
     confetti({
@@ -262,7 +254,9 @@ let audioCtx;
             }
         }
 
-
+ function closeButton() {
+    overlay.style.display = 'none';
+  };
 
 </script>
 </body>
