@@ -340,14 +340,16 @@
 
                 // 2. 左右から別の紙吹雪を追加（これを入れると非常に豪華になります）
                 confetti({
-                    particleCount: 50,
+                    particleCount: 100,
                     angle: 60,
+                    scalar: 1.5,
                     spread: 55,
                     origin: { x: 0, y: 0.6 } // 左下から
                 });
                 confetti({
-                    particleCount: 50,
+                    particleCount: 100,
                     angle: 120,
+                    scalar: 1.5,
                     spread: 55,
                     origin: { x: 1, y: 0.6 } // 右下から
                 });
@@ -355,6 +357,8 @@
 
                 confetti({
                     particleCount: 200,
+                    scalar: 1.5,
+                    spread: 100,        // 広がりを大きく
                     shapes: ['square', 'circle', 'star', 'heart'], // これらをランダムに混ぜる
                     colors: ['#FFE400', '#FFBD00', '#E89400', '#FFCA6C', '#FDFFB8']
                 });
