@@ -193,10 +193,10 @@
 
         <div id="overlay">
             <div style="text-align: center;">
+                <!-- <h1 style="color:white;">お店の人に聞いてね</h1> -->
                 <button id="hit-btn" class="btn" onclick="closeButton()" />
             </div>
         </div>
-
         <div id="slot-display">READY?</div>
         <button id="main-btn" class="btn" onclick="toggleSlot()">スタート！</button>
 
@@ -211,8 +211,6 @@
             let ooatariPercent = [];
             let omake = [];
             let omakePercent = [];
-
-            let selectedCategory = ''; // 選択されたカテゴリを保持
 
             $(function () {
                 showLoading();//ローディング
@@ -273,20 +271,17 @@
                         // 表示内容を反映
                         display.innerHTML = item;
 
-                        // 【ここを追加】文字数に応じてサイズを変更
                         if (item.length > 10) {
-                            display.style.fontSize = "25px"; // 長い場合
+                            display.style.fontSize = "20px"; // 長い場合
                         } else if (item.length > 6) {
-                            display.style.fontSize = "32px"; // 普通の場合
+                            display.style.fontSize = "25px"; // 普通の場合
                         } else {
                             display.style.fontSize = "35px"; // 短い場合
                         }
-
                         //ルーレット音
                         playSound('');
 
                     }, 80);//文字の変わるスピード
-
 
                 } else {
                     clearInterval(slotInterval);
@@ -298,12 +293,12 @@
                     blockButton(); // ボタンを非活性化する関数へ
 
                     if ((ooatari == true && Math.random() < (ooatariPercent / 100))) {
-                        // 大当たりの場合、オーバーレイを表示
+                        // 大当たりの場合、
                         overlay.className = 'overlay-ooatari'; // 背景キラキラ
                         document.getElementById('hit-btn').textContent = "大当たり！！";
                         overlay.style.display = 'flex';
                     } else if ((omake == true && Math.random() < (omakePercent / 100))) {
-                        // おまけの場合、オーバーレイを表示
+                        // おまけの場合、
                         overlay.className = 'overlay-omake'; // 背景グレー
                         document.getElementById('hit-btn').textContent = "おまけがもらえるよ";
                         overlay.style.display = 'flex';
@@ -339,15 +334,6 @@
                         shapes: ['square', 'circle', 'star', 'heart'], // これらをランダムに混ぜる
                         colors: ['#FFE400', '#FFBD00', '#E89400', '#FFCA6C', '#FDFFB8']
                     });
-
-
-                    // // ボタンを再度有効にする（10分後）
-                    // setTimeout(() => {
-                    //     mainBtn.disabled = false;
-                    //     mainBtn.textContent = "スタート！";
-                    //     mainBtn.classList.remove("stop-style");
-                    // }, 600000);//（1000ミリ秒 × 60秒 × 10分）
-
                 }
             }
 
@@ -374,6 +360,11 @@
             }
 
             function closeButton() {
+                //もう一回の間隔（ミリ秒　×　指定時間）
+                const endTime = Date.now() + (1000 * retrySpan);
+                localStorage.setItem('blockEndTime', endTime);
+
+                blockButton(); // ボタンを非活性化する関数へ
                 overlay.style.display = 'none';
             };
 
@@ -437,9 +428,9 @@
                     mainBtn.classList.remove("stop-style");
                     localStorage.removeItem('blockEndTime'); // 不要になったので削除
                     //チケット画面を出す
-                    
+
                     //あたり画面が出ていなかったら、チケット画面を出す
-                    if(document.getElementById('overlay').style.display == 'none'){
+                    if (document.getElementById('overlay').style.display == 'none') {
                         document.getElementById('ticket-overlay').style.display = 'flex';
                     }
                 }
