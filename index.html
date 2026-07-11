@@ -392,9 +392,8 @@
                 } else if (type === 'drink') {
                     allItems = drinkAllItems;
                 } else {
-                    // 'all' の場合は何もしない（全件そのまま）
+                    // 'all' の場合
                     allItems = [...drinkAllItems, ...jellyAllItems];
-                    // 2. allItems をランダムにシャッフルする（Fisher-Yatesシャッフル）
                     for (let i = allItems.length - 1; i > 0; i--) {
                         const j = Math.floor(Math.random() * (i + 1));
                         [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
@@ -405,6 +404,8 @@
                     alert("売り切れです。ごめんなさい！！");
                     return;
                 } else {
+                    const slotDisplay = document.getElementById('slot-display');
+                    slotDisplay.textContent = "READY?";
                     document.getElementById('select-overlay').style.display = 'none';
                 }
             }
