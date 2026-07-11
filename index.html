@@ -37,6 +37,27 @@
             /* 明るい黄色の縁取り */
         }
 
+        /* スマホ向けの調整 */
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 5px;
+                /* 全体の余白を小さく */
+            }
+
+            .container {
+                max-width: 100%;
+                /* 最大幅を制限しない */
+                width: 95vw;
+                /* 画面幅の95%を使う */
+                padding: 15px;
+                /* 内側の余白を少し詰める */
+                border-radius: 20px;
+                /* 角丸を少し小さく */
+                border-width: 4px;
+                /* 枠線を少し細く */
+            }
+        }
+
         h1 {
             color: #f57c00;
             font-size: 32px;
