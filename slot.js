@@ -105,10 +105,6 @@ function toggleSlot() {
     } else {
         clearInterval(slotInterval);
         isSpinning = false;
-
-        //もう一回の間隔（ミリ秒　×　指定時間）
-        const endTime = Date.now() + (1000 * retrySpan);
-        localStorage.setItem('blockEndTime', endTime);
         //ボタン制御
         blockButton('stop');
 
@@ -181,9 +177,6 @@ function playSound(type) {
 }
 
 function closeButton() {
-    //もう一回の間隔（ミリ秒　×　指定時間）
-    const endTime = Date.now() + (1000 * retrySpan);
-    localStorage.setItem('blockEndTime', endTime);
     //ボタン制御
     blockButton(); // ボタンを非活性化する関数へ
     overlay.style.display = 'none';
@@ -291,6 +284,10 @@ function blockButton(type) {
 
     } else if (type === 'start') {
         mainBtn.textContent = "ストップ！";
+        //もう一回の間隔（ミリ秒　×　指定時間）
+        const endTime = Date.now() + (1000 * retrySpan);
+        localStorage.setItem('blockEndTime', endTime);
+
         // 現在のカテゴリーに合わせてクラスを付与
         const currentTitle = document.getElementById('slot-title').textContent;
         if (currentTitle.includes("ゼリー")) {
@@ -304,6 +301,10 @@ function blockButton(type) {
     } else if (type === 'stop') {
         mainBtn.disabled = true;
         mainBtn.textContent = "またチャレンジしてね";
+        //もう一回の間隔（ミリ秒　×　指定時間）
+        const endTime = Date.now() + (1000 * retrySpan);
+        localStorage.setItem('blockEndTime', endTime);
+        setTimeout(blockButton, endTime - now);
     } else {
 
         if (endTime && now < endTime) {
@@ -417,18 +418,18 @@ function fetchLatestConfig() {
 function getToday() {
     const now = new Date();
     return now.getFullYear() + "-" +
-           String(now.getMonth() + 1).padStart(2, "0") + "-" +
-           String(now.getDate()).padStart(2, "0");
+        String(now.getMonth() + 1).padStart(2, "0") + "-" +
+        String(now.getDate()).padStart(2, "0");
 }
 //カウントアップ関数
 function incrementCounter(type) {
 
     const today = getToday();
     const url = "https://slot-nanryo-default-rtdb.firebaseio.com/counter/" +
-                today + "/" + type + ".json";
-    $.get(url, function(count){
+        today + "/" + type + ".json";
+    $.get(url, function (count) {
 
-        if(count == null){
+        if (count == null) {
             count = 0;
         }
         $.ajax({
