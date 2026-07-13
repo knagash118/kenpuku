@@ -277,12 +277,41 @@
         </div>
 
         <h1 id="slot-title">ドリンク・スロット</h1>
-        <div id="overlay">
+        <!-- <div id="overlay">
             <div style="text-align: center;">
                 <p id="overlay-message"
                     style="font-size: 24px; margin-bottom: 20px; color: #fff; text-shadow: 2px 2px 4px #000;">
                     お店の人に見せてね
                 </p>
+                <button id="hit-btn" class="btn" onclick="closeButton()"></button>
+            </div>
+        </div> -->
+        <!-- index.html の中にある overlay の div 内 -->
+        <!-- overlay内の修正 -->
+        <div id="overlay">
+            <div style="text-align: center;">
+
+
+
+                <p id="overlay-message"
+                    style="font-size: 24px; margin-bottom: 20px; color: #fff; text-shadow: 2px 2px 4px #000;">
+                    お店の人に見せてね
+                </p>
+                <!-- ここにスロットと同じ見た目を適用します -->
+                <div id="result-display" style="
+            font-size: 30px;
+            font-weight: bold;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 25px;
+            margin: 20px auto;
+            width: 300px;
+            border: 6px solid;">
+                    READY?
+                </div>
+
                 <button id="hit-btn" class="btn" onclick="closeButton()"></button>
             </div>
         </div>
