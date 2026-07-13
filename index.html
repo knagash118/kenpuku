@@ -60,6 +60,13 @@
                 border-width: 4px;
                 /* 枠線を少し細く */
             }
+
+            .container>div:nth-child(3)>div:last-child {
+                font-size: 28px !important;
+                /* スマホで1行に収まるサイズに調整 */
+                letter-spacing: 2px !important;
+                /* 文字間隔も少し詰めるとより収まりやすくなります */
+            }
         }
 
         h1 {
@@ -232,7 +239,6 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
             /* 押し込まれたような影[cite: 1] */
         }
-        
     </style>
 </head>
 <div id="loading">
@@ -244,21 +250,21 @@
         <img src="./emblem.jpg" width="50%" height="50%">
         <br />
         <div style="text-align:center; margin-bottom:20px;">
-    <div style="
+            <div style="
         color:#666;
         font-size:18px;
         letter-spacing:8px;
         font-weight:bold;">
-        横浜南陵高校
-    </div>
-    <div style="
+                横浜南陵高校
+            </div>
+            <div style="
         width:240px;
         height:3px;
         background:linear-gradient(to right,#29b6f6,#ff9800,#ff4081);
         margin:10px auto 15px;
         border-radius:3px;">
-    </div>
-    <div style="
+            </div>
+            <div style="
         font-size:42px;
         font-weight:900;
         letter-spacing:4px;
@@ -266,9 +272,9 @@
         -webkit-background-clip:text;
         -webkit-text-fill-color:transparent;
         text-shadow:2px 2px 8px rgba(0,0,0,0.2);">
-        健康福祉グループ
-    </div>
-</div>
+                健康福祉グループ
+            </div>
+        </div>
 
         <h1 id="slot-title">ドリンク・スロット</h1>
         <div id="overlay">
